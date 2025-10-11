@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grade 9 Physics Mini App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Telegram Dark Style */
+        body {
+            background-color: #1e1e2d;
+            /* Telegram-style dark */
+            color: #fff;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        ::selection {
+            background: none;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #55acee;
+            /* Highlight for title */
+        }
+
+        p {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 20px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        #content-wrapper {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        @media screen {
+            body:after {
+                content: '';
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                pointer-events: none;
+                background: rgba(0, 0, 0, 0);
+                z-index: 9999;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content-wrapper">
+        <h1 id="title">Initializing...</h1>
+        <p id="content">Waiting for Telegram Web App data...</p>
+    </div>
+
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script>
+        // Physics lesson topics for each deep link
+        const topics = {
+            "ab1": {
+                title: "Unit 1: Introduction to Physics – 1.1 The Meaning and Importance of Physics",
+                content: `Physics is the scientific study of matter, energy, and the interactions between them.
+ፊዚክስ የነገር (matter)፣ ኃይል (energy) እና መተባታቸው ሳይንሳዊ ጥናት ነው።
+What does it mean to study “motion”?
+"እንቁላል" መረዳት ማለት ምን ማለት ነው?
+It is complex to define motion simply, but we recognize it by changes in position and speed.
+እንቁልፉን በቀላል መግለፅ ከባድ ነው፣ ነገር ግን በቦታ ለውጦች እና ፍጥነት እንለያዋለን።
+Physical phenomena:
+(አካል ነገሮች የሚከተሉት ባህሪያት አሏቸው):
+
+involve motion and force
+
+o
+እንቁልፍ እና ኃይል (force) ያጋጠሙበታል።
+o
+
+include energy transformations
+
+o
+ኃይል ለውጦችን (energy transformations) ያካትታሉ።
+o
+
+can be measured with tools like rulers and clocks
+
+o
+በመለኪያ መሣሪያዎች እንደ መጠን መለኪያ (rulers) እና ሰዓት (clocks) መለካት ይቻላል።
+o
+
+affect everyday life
+
+o
+የማያያዝ ህይወትን ተገድቧሉ።
+o
+`
+            },
+            "ab2": {
+                title: "Unit 1: Introduction to Physics – 1.2 The Methods of Studying Physics",
+                content: `What is a scientific study in physics?
+
+(በፊዚክስ ውስጥ ሳይንሳዊ ጥናት ማለት ምን ማለት ነው?)
+Physicists study the natural world using a scientific method that involves asking questions, proposing hypotheses, and testing them through experiments. This scientific
+ፊዚስቲስቶች የተፈጥሯውን ዓለም በሳይንሳዊ ስነ-ዘዴ (scientific method) በመጠቀም ያጠኑበት ነው፣ ይህም ጥያቄዎችን መጠየቅ፣ መላምቶችን መቀነስ እና በሙከራ (experiments) መፈተትን ያካትታል። ይህ ሳይንሳዊ... (አረፍተ ነገሩ ያልተጠናቀቀ ነው፤ የሚቀጥለው ክፍል ግን የሳይንሳዊ ስነ-ዘዴን የሚገልጽ ነው።)
+ይህ የጥናት ክፍል በአማርኛ ማብራሪያ ተሰጥቶታል።`
+            },
+            "ab3": {
+                title: "Unit 1: Introduction to Physics – 1.3 The Branches of Physics",
+                content: `What comes to your mind when you hear the word physics?
+
+"ፊዚክስ" የሚለውን ቃል ሲሰሙ ወደ አእምሮዎ የሚመጣው ምንድን ነው?
+Physicists investigate forces, energy, and motion, developing theories using the scientific method.
+ፊዚስቲስቶች ኃይል፣ ኃይል፣ እና እንቁልፍን ይገታሉ፣ በሳይንሳዊ ስነ-ዘዴ መባል የሚታወቀውን በመጠቀም ቲዎሪዎችን ይፈጥራሉ።
+The scientific method guides physicists through systematic investigations.
+ሳይንሳዊ ስነ-ዘዴ ፊዚስቲስቶችን በስርዓተዊ ምርመራዎች (investigations) የሚመሩ መንገድ ያቋርጠዋል።
+Physicists study the physical world by asking questions about its laws.
+ፊዚስቲስቶች የአካል ዓለምን በህጎችው ስላው ጥያቄዎችን በማንሳት ያጠኑበት ነው።
+The general steps of the Scientific methods are:
+(የሳይንሳዊ ስነ-ዘዴ አጠቃላይ ደረጃዎች የሚከተሉት ናቸው)፡
+
+Observation (ምልከታ)
+The scientific study begins with careful observations (often a problem to solve) that leads to a question. The observations can be made either directly (e.g. using your senses) or indirectly using tools like thermometers.
+ሳይንሳዊ ጥናት የሚጀምረው በጥንቃቄ በተደረገ ምልከታ (observations) ነው (ብዙውን ጊዜ ለመፍታት የሚፈለግ ችግር) ይህም ወደ ጥያቄ ያመራል። ምልከታዎቹ በቀጥታ (ለምሳሌ ስሜቶችን በመጠቀም) ወይም እንደ ቴርሞሜትር (thermometers) ያሉ መሳሪያዎችን በመጠቀም በተዘዋዋሪ መንገድ ሊደረጉ ይችላሉ።
+
+Asking Questions (ጥያቄዎችን መጠየቅ)
+The observations usually lead the physicist to ask questions (inquiry).
+ምልከታዎቹ ብዙውን ጊዜ ፊዚስቲስቱን ጥያቄዎችን እንዲጠይቅ (inquiry) ይመሩታል።
+
+Forming of a hypothesis (መላምት ማዘጋጀት)
+A hypothesis is a proposed explanation (possible answer) for a set of questions. To solve a problem, one can propose several hypotheses. Scientific hypotheses should be testable.
+መላምት (Hypothesis) ለአንድ ወይም ለብዙ ጥያቄዎች የቀረበ ማብራሪያ (ሊሆን የሚችል መልስ) ነው። አንድን ችግር ለመፍታት፣ ብዙ መላምቶችን ማቅረብ ይቻላል። ሳይንሳዊ መላምቶች ሊሞከሩ የሚችሉ (testable) መሆን አለባቸው።
+
+Testing the hypothesis (መላምቱን መፈተሽ)
+Hypothesis can be tested through experiments. Any scientific experiment must be repeatable because the “answer” the physicist finds (whether it supports or rejects the hypothesis) becomes scientific knowledge only if others can replicate it.
+መላምት በሙከራ (experiments) አማካኝነት ሊፈተን ይችላል። ማንኛውም ሳይንሳዊ ሙከራ ሊደገም የሚችል (repeatable) መሆን አለበት። ምክንያቱም ፊዚስቲስቱ ያገኘው "መልስ" (መላምቱን ይደግፍም ይሁን ይሽር) ሌሎች ፊዚስቲስቶች ተመሳሳይ ሙከራ አድርገው ተመሳሳይ ውጤት ካላገኙ የሳይንሳዊ እውቀት (scientific knowledge) አካል ሊሆን አይችልም።
+If a hypothesis is not supported by experimental data, one can propose a new hypothesis.
+አንድ መላምት በሙከራ መረጃ (experimental data) ካልተደገፈ፣ አዲስ መላምት ማቅረብ ይቻላል።`
+            }
+        };
+
+        // Function to update page content
+        function updateContent(topicKey) {
+            const titleElement = document.getElementById("title");
+            const contentElement = document.getElementById("content");
+            const topic = topics[topicKey];
+
+            if (topic) {
+                titleElement.textContent = topic.title;
+                contentElement.textContent = topic.content;
+            } else {
+                titleElement.textContent = "Welcome to Grade 9 Physics tutorials – stay with us!";
+                contentElement.textContent = "";
+            }
+        }
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            let topicKey = null;
+
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.ready();
+                if (Telegram.WebApp.initDataUnsafe?.start_param) {
+                    topicKey = Telegram.WebApp.initDataUnsafe.start_param;
+                }
+
+                Telegram.WebApp.setBackgroundColor('#1e1e2d');
+                Telegram.WebApp.setHeaderColor('#1e1e2d');
+            }
+
+            // Fallback for testing in browser
+            if (!topicKey) {
+                const urlParams = new URLSearchParams(window.location.search);
+                topicKey = urlParams.get("topic");
+            }
+
+            updateContent(topicKey);
+        });
+    </script>
+</body>
+
+</html>
